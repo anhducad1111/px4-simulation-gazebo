@@ -46,10 +46,21 @@ async def print_flight_mode(my_drone):
 
 async def manual_control_drone(my_drone):
     global roll, pitch, throttle, yaw
-    while True:
-        print(roll, pitch, throttle, yaw)
-        await my_drone.manual_control.set_manual_control_input(roll, pitch, throttle, yaw)
-        await asyncio.sleep(0.1)
+    counter = 0
+    position_stream = my_drone.telemetry.position()
+    attitude_stream = my_drone.telemetry.attitude_euler()
+    
+    try:
+        async for position in position_stream:
+            attitude = await anext(attitude_stream)
+            if counter % 30 == 0:
+                print(f"Lat:{position.latitude_deg:.6f}°,Lon:{position.longitude_deg:.6f}°,Alt:{position.relative_altitude_m:.2f}m,Roll:{attitude.roll_deg:.2f}°,Pitch:{attitude.pitch_deg:.2f}°,Yaw:{attitude.yaw_deg:.2f}°")
+            await my_drone.manual_control.set_manual_control_input(roll, pitch, throttle, yaw)
+            await asyncio.sleep(0.1)
+            counter += 1
+    finally:
+        await position_stream.cancel()
+        await attitude_stream.cancel()
 
 async def run_drone():
     asyncio.ensure_future(getKeyboardInput(drone))

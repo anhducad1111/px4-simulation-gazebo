@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Data</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/data');
+            const data = await response.json();
+            document.getElementById('data').innerText = JSON.stringify(data, null, 2);
+        }
+
+        setInterval(fetchData, 1000);
+
+        async function sendControlCommand(command) {
+            await fetch('/control', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command: command })
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Drone Control Interface</h1>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h3>Drone Data</h3>
+                <pre id="data" class="bg-light p-3 rounded">Loading...</pre>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h4>Movement Controls</h4>
+                <button class="btn btn-primary mb-2" onclick="sendControlCommand('UP')">UP</button>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-primary" onclick="sendControlCommand('LEFT')">LEFT</button>
+                    <button class="btn btn-primary" onclick="sendControlCommand('RIGHT')">RIGHT</button>
+                </div>
+                <button class="btn btn-primary mt-2" onclick="sendControlCommand('DOWN')">DOWN</button>
+            </div>
+
+            <div class="col-md-6 text-center">
+                <h4>Flight Controls</h4>
+                <button class="btn btn-primary mb-2" onclick="sendControlCommand('w')">THROTTLE UP</button>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-primary" onclick="sendControlCommand('a')">YAW LEFT</button>
+                    <button class="btn btn-primary" onclick="sendControlCommand('d')">YAW RIGHT</button>
+                </div>
+                <button class="btn btn-primary mt-2" onclick="sendControlCommand('s')">THROTTLE DOWN</button>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <button class="btn btn-primary" onclick="sendControlCommand('i')">PRINT FLIGHT MODE</button>
+                <button class="btn btn-secondary" onclick="sendControlCommand('r')">ARM</button>
+                <button class="btn btn-danger" onclick="sendControlCommand('l')">LAND</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

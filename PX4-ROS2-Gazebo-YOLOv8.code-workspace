@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../PX4-Autopilot/Tools/simulation/gz"
+		},
+		{
+			"path": "../PX4-Autopilot"
+		},
+		{
+			"path": "../.simulation-gazebo"
+		},
+		{
+			"path": "../Downloads/archive"
+		}
+	],
+	"settings": {
+		"ros.distro": "humble"
+	}
+}

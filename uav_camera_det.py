@@ -13,7 +13,7 @@ import cv2 # OpenCV library
 from ultralytics import YOLO # YOLO library
 
 # Load the YOLOv8 model
-model = YOLO('yolov8m.pt')
+model = YOLO('best.pt')
 
 
 class ImageSubscriber(Node):
@@ -50,10 +50,16 @@ class ImageSubscriber(Node):
     current_frame = self.br.imgmsg_to_cv2(data, desired_encoding="bgr8")
     image = current_frame
     # Object Detection
-    results = model.predict(image, classes=[0, 2])
+    results = model.predict(
+      image, 
+      classes=[0, 1, 2, 3, 4]
+      )
     img = results[0].plot()
     # Show Results
-    cv2.imshow('Detected Frame', img)    
+    window_name = 'Detected Frame'
+    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+    cv2.resizeWindow(window_name, 800, 600)
+    cv2.imshow(window_name, img)     
     cv2.waitKey(1)
   
 def main(args=None):
