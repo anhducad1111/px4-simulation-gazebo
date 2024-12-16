@@ -1,8 +1,8 @@
 # px4-simulation-gazebo
 Construction Site Safety using a Drone with PX4 Autopilot and ROS 2. PX4 SITL and Gazebo Garden used for Simulation.
-```
 
-### Installation
+
+## Installation
 
 ### Create a virtual environment
 ```commandline
@@ -12,10 +12,12 @@ python3 -m venv ~/px4-venv
 # activate
 source ~/px4-venv/bin/activate
 ```
+
 ### Clone repository
 ```commandline
 git clone https://github.com/anhducad1111/px4-simulation-gazebo
 ```
+
 ### Install PX4
 ```commandline
 cd ~
