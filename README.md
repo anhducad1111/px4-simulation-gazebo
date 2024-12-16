@@ -1,36 +1,19 @@
 # PX4-ROS2-Gazebo-YOLOv8
-Aerial Object Detection using a Drone with PX4 Autopilot and ROS 2. PX4 SITL and Gazebo Garden used for Simulation. YOLOv8 used for Object Detection.
-
-## Demo
-https://github.com/monemati/PX4-ROS2-Gazebo-YOLOv8/assets/58460889/fab19f49-0be6-43ea-a4e4-8e9bc8d59af9
-
-## Docker
-- I've provided a Dockerfile, already tested with the latest version of PX4-Autopilot (v1.15.0).
-```commandline
-# Build
-git clone https://github.com/monemati/PX4-ROS2-Gazebo-YOLOv8.git
-cd PX4-ROS2-Gazebo-YOLOv8
-docker build -t px4_ros2_gazebo_yolov8_image .
-
-# Run
-XAUTH=/tmp/.docker.xauth
-touch $XAUTH
-xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
-docker run --privileged -it --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all -e NVIDIA_VISIBLE_DEVICES=all --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --env="XAUTHORITY=$XAUTH" --volume="$XAUTH:$XAUTH" --network=host --ipc=host --shm-size=2gb --env="DISPLAY=$DISPLAY" --env="QT_X11_NO_MITSHM=1" --rm --name px4_ros2_gazebo_yolov8_container px4_ros2_gazebo_yolov8_image
+Construction Site Safety using a Drone with PX4 Autopilot and ROS 2. PX4 SITL and Gazebo Garden used for Simulation.
 ```
 
 ## Installation
 ### Create a virtual environment
 ```commandline
 # create
-python -m venv ~/px4-venv
+python3 -m venv ~/px4-venv
 
 # activate
 source ~/px4-venv/bin/activate
 ```
 ### Clone repository
 ```commandline
-git clone https://github.com/monemati/PX4-ROS2-Gazebo-YOLOv8.git
+git clone https://github.com/anhducad1111/px4-simulation-gazebo
 ```
 ### Install PX4
 ```commandline
@@ -56,7 +39,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install ros-humble-desktop
 sudo apt install ros-dev-tools
 source /opt/ros/humble/setup.bash && echo "source /opt/ros/humble/setup.bash" >> .bashrc
-pip install --user -U empy pyros-genmsg setuptools
+pip install -U empy pyros-genmsg setuptools
 ```
 ### Setup Micro XRCE-DDS Agent & Client
 ```commandline
@@ -134,12 +117,12 @@ ros2 run ros_gz_image image_bridge /camera
 
 Terminal #4:
 source ~/px4-venv/bin/activate
-cd ~/PX4-ROS2-Gazebo-YOLOv8
+cd ~/px4-simulation-gazebo
 python uav_camera_det.py
 
 Terminal #5:
 source ~/px4-venv/bin/activate
-cd ~/PX4-ROS2-Gazebo-YOLOv8
+cd ~/px4-simulation-gazebo
 python keyboard-mavsdk-test.py
 ```
 When you run the last command a blank window will open for reading inputs from keyboard. focus on that window by clicking on it, then hit "r" on keyboard to arm the drone, and use WASD and Up-Down-Left-Right on the keyboard for flying, and use "l" for landing.
@@ -160,7 +143,7 @@ ros2 run ros_gz_image image_bridge /camera
 
 Terminal #4:
 source ~/px4-venv/bin/activate
-cd ~/PX4-ROS2-Gazebo-YOLOv8
+cd ~/px4-simulation-gazebo
 python uav_camera_det.py
 
 Terminal #5:
@@ -175,3 +158,5 @@ ros2 run px4_ros_com offboard_control
 - https://github.com/ultralytics/ultralytics
 - https://www.ros.org/
 - https://gazebosim.org/
+# px4-simulation-gazebo
+# px4-simulation-gazebo
