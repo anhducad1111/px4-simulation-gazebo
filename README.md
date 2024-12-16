@@ -54,6 +54,18 @@ make
 sudo make install
 sudo ldconfig /usr/local/lib/
 ```
+### Install pip package
+```commandline
+source ~/px4-venv/bin/activate
+pip install mavsdk empy==3.3.4 'numpy<2' lark catkin_pkg
+pip install aioconsole
+pip install pygame
+sudo apt install ros-humble-ros-gzgarden
+pip install numpy
+pip install opencv-python
+pip install ultralytics
+```
+
 ### Build ROS 2 Workspace
 ```commandline
 mkdir -p ~/ws_sensor_combined/src/
@@ -72,31 +84,28 @@ cd ..
 source /opt/ros/humble/setup.bash
 colcon build
 ```
-### Install pip package
-```commandline
-source ~/px4-venv/bin/activate
-pip install mavsdk empy==3.3.4 'numpy<2' lark catkin_pkg
-pip install aioconsole
-pip install pygame
-sudo apt install ros-humble-ros-gzgarden
-pip install numpy
-pip install opencv-python
-pip install ultralytics
-```
+
 ### Additional Configs
 - Put below lines in your bashrc:
 ```commandline
+# Source ROS 2 Humble setup
 source /opt/ros/humble/setup.bash
+
+# Export GZ_SIM_RESOURCE_PATH
 export GZ_SIM_RESOURCE_PATH=~/.gz/models
-```
-- Copy the content of models from main repo to ~/.gz/models
-- Copy default.sdf from worlds folder in the main repo to ~/PX4-Autopilot/Tools/simulation/gz/worlds/
-- Change the angle of Drone's camera for better visual:
-```commandline
-# Go to ~/PX4-Autopilot/Tools/simulation/gz/models/x500_depth/model.sdf then change <pose> tag in line 9 from:
-<pose>.12 .03 .242 0 0 0</pose>
-to:
-<pose>.15 .029 .21 0 0.7854 0</pose>
+
+# Copy models to ~/.gz/models
+mkdir -p ~/.gz/models
+cp -r /px4-simulation-gazebo/models/* ~/.gz/models/
+
+# Copy default.sdf to the appropriate directory
+mkdir -p ~/PX4-Autopilot/Tools/simulation/gz/worlds/
+cp /px4-simulation-gazebo/worlds/default.sdf ~/PX4-Autopilot/Tools/simulation/gz/worlds/
+
+# Change the angle of Drone's camera
+sed -i '9s/<pose>.12 .03 .242 0 0 0<\/pose>/<pose>.15 .029 .21 0 0.7854 0<\/pose>/' ~/PX4-Autopilot/Tools/simulation/gz/models/x500_depth/model.sdf
+
+echo "Setup completed successfully."
 ```
 
 ## Run
@@ -111,7 +120,7 @@ source ~/.bashrc
 cd ~/PX4-Autopilot
 make clean
 source ~/px4-venv/bin/activate
-PX4_GZ_MODEL_POSE="-30, -30,4,0,0,0.9"  make px4_sitl gz_x500_depth
+PX4_GZ_MODEL_POSE="-30,-30,4,0,0,0.9"  make px4_sitl gz_x500_depth
 
 Terminal #3:
 ros2 run ros_gz_image image_bridge /camera
@@ -120,9 +129,9 @@ Terminal #4:
 source ~/px4-venv/bin/activate
 cd ~/px4-simulation-gazebo
 python uav_camera_det.py
-
+```
 ### Fly using Keyboard
-
+```commandline
 Terminal #5:
 source ~/px4-venv/bin/activate
 cd ~/px4-simulation-gazebo
@@ -131,7 +140,7 @@ python keyboard-mavsdk-test.py
 When you run the last command a blank window will open for reading inputs from keyboard. focus on that window by clicking on it, then hit "r" on keyboard to arm the drone, and use WASD and Up-Down-Left-Right on the keyboard for flying, and use "l" for landing.
 
 ### Fly using ROS 2
-
+```commandline
 Terminal #5:
 cd ~/ws_offboard_control
 source /opt/ros/humble/setup.bash
@@ -139,6 +148,7 @@ source install/local_setup.bash
 ros2 run px4_ros_com offboard_control
 ```
 ### Fly automation
+```commandline
 Terminal #5:
 source ~/px4-venv/bin/activate
 cd ~/px4-simulation-gazebo
