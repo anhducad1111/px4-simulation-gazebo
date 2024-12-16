@@ -86,7 +86,6 @@ colcon build
 ```
 
 ### Additional Configs
-- Put below lines in your bashrc:
 ```commandline
 # Source ROS 2 Humble setup
 source /opt/ros/humble/setup.bash
