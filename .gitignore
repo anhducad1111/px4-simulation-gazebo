@@ -1,1 +1,14 @@
-# Add files and directories to ignore
+# Ignore .gitignore file in px4-simulation-gazebo
+/home/ad/px4-simulation-gazebo/.gitignore
+
+# Ignore yolov8m.pt file in px4-simulation-gazebo
+/home/ad/px4-simulation-gazebo/yolov8m.pt
+
+# Ignore PX4-ROS2-Gazebo-YOLOv8.code-workspace file in px4-simulation-gazebo
+/home/ad/px4-simulation-gazebo/PX4-ROS2-Gazebo-YOLOv8.code-workspace
+
+# Ignore .vscode folder in px4-simulation-gazebo
+/home/ad/px4-simulation-gazebo/.vscode/
+
+# Ignore __pycache__ folder in px4-simulation-gazebo
+/home/ad/px4-simulation-gazebo/__pycache__/
