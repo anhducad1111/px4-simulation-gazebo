@@ -1,8 +1,9 @@
-# PX4-ROS2-Gazebo-YOLOv8
+# px4-simulation-gazebo
 Construction Site Safety using a Drone with PX4 Autopilot and ROS 2. PX4 SITL and Gazebo Garden used for Simulation.
 ```
 
-## Installation
+### Installation
+
 ### Create a virtual environment
 ```commandline
 # create
@@ -71,17 +72,15 @@ cd ..
 source /opt/ros/humble/setup.bash
 colcon build
 ```
-### Install MAVSDK
+### Install pip package
 ```commandline
-pip install mavsdk
+source ~/px4-venv/bin/activate
+pip install mavsdk empy==3.3.4 'numpy<2' lark catkin_pkg
 pip install aioconsole
 pip install pygame
 sudo apt install ros-humble-ros-gzgarden
 pip install numpy
 pip install opencv-python
-```
-### Install YOLO
-```commandline
 pip install ultralytics
 ```
 ### Additional Configs
@@ -101,7 +100,6 @@ to:
 ```
 
 ## Run
-### Fly using Keyboard
 You need several terminals.
 ```commandline
 Terminal #1:
@@ -109,8 +107,11 @@ cd ~/Micro-XRCE-DDS-Agent
 MicroXRCEAgent udp4 -p 8888
 
 Terminal #2:
+source ~/.bashrc
 cd ~/PX4-Autopilot
-PX4_SYS_AUTOSTART=4002 PX4_GZ_MODEL_POSE="268.08,-128.22,3.86,0.00,0,-0.7" PX4_GZ_MODEL=x500_depth ./build/px4_sitl_default/bin/px4
+make clean
+source ~/px4-venv/bin/activate
+PX4_GZ_MODEL_POSE="-30, -30,4,0,0,0.9"  make px4_sitl gz_x500_depth
 
 Terminal #3:
 ros2 run ros_gz_image image_bridge /camera
@@ -119,6 +120,8 @@ Terminal #4:
 source ~/px4-venv/bin/activate
 cd ~/px4-simulation-gazebo
 python uav_camera_det.py
+
+### Fly using Keyboard
 
 Terminal #5:
 source ~/px4-venv/bin/activate
@@ -128,23 +131,6 @@ python keyboard-mavsdk-test.py
 When you run the last command a blank window will open for reading inputs from keyboard. focus on that window by clicking on it, then hit "r" on keyboard to arm the drone, and use WASD and Up-Down-Left-Right on the keyboard for flying, and use "l" for landing.
 
 ### Fly using ROS 2
-You need several terminals.
-```commandline
-Terminal #1:
-cd ~/Micro-XRCE-DDS-Agent
-MicroXRCEAgent udp4 -p 8888
-
-Terminal #2:
-cd ~/PX4-Autopilot
-PX4_SYS_AUTOSTART=4002 PX4_GZ_MODEL_POSE="283.08,-136.22,3.86,0.00,0,-0.7" PX4_GZ_MODEL=x500_depth ./build/px4_sitl_default/bin/px4
-
-Terminal #3:
-ros2 run ros_gz_image image_bridge /camera
-
-Terminal #4:
-source ~/px4-venv/bin/activate
-cd ~/px4-simulation-gazebo
-python uav_camera_det.py
 
 Terminal #5:
 cd ~/ws_offboard_control
@@ -152,12 +138,16 @@ source /opt/ros/humble/setup.bash
 source install/local_setup.bash
 ros2 run px4_ros_com offboard_control
 ```
+### Fly automation
+Terminal #5:
+source ~/px4-venv/bin/activate
+cd ~/px4-simulation-gazebo
+python ps.py
+```
 
 ## Acknowledgement
 - https://github.com/PX4/PX4-Autopilot
 - https://github.com/ultralytics/ultralytics
 - https://www.ros.org/
 - https://gazebosim.org/
-# px4-simulation-gazebo
-# px4-simulation-gazebo
-# px4-simulation-gazebo
+
